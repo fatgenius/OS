@@ -6,7 +6,7 @@
 struct sum_runner_struct{
     long long limit;
     long long answer;
-}
+};
 
 void* sum_runner(void* arg)
 {
@@ -28,24 +28,22 @@ void* sum_runner(void* arg)
     exit(-1);
   }
   int num_args = argc -1;
-
-
-  //pthread id
+  struct sum_runner_struct args[num_args];//hread id
   pthread_t tid[num_args];
   for (int i = 0; i < num_args; i++)
   {
-    struct sum_runner_struct args;
-    args.limit = atoll(argv[i+1]);
+    //struct sum_runner_struct args;
+    args[i].limit = atoll(argv[i+1]);
     pthread_attr_t attr;
     pthread_attr_init(&attr);
-    pthread_create(&tid[i], &attr, sum_runner,& args);
+    pthread_create(&tid[i], &attr, sum_runner,& args[i]);
     /* code */
   }
 
 
 //  pthread_create(&tid, &attr, sum_runner,& limit);
 //wait until thread is done
-for (size_t i = 0; i < num_args; i++) {
+for (int i = 0; i < num_args; i++) {
 
     pthread_join(tid[i], NULL);/* code */
     printf("sum is %lld\n", args[i].answer );
